@@ -18,13 +18,16 @@ const BookArr = [
 ]
 
 const BookList = () => {
+  const getBook = (id) =>{
+    const book = BookArr.find((bookie)=>bookie.id === id)
+    console.log(book);
+  }
   return (
     <section className="bookList">
-      <EventExamples/>
     {
       BookArr.map((book)=>{
         return (
-          <Book {...book} key={book.id}/>
+          <Book {...book} key={book.id} someVal={getBook}/>
         )
       })
     }
@@ -33,27 +36,46 @@ const BookList = () => {
 };
 
 const EventExamples = () =>{
-  const handleFormInput = () => {
+  const handleFormInput = (e) => {
+    console.log(e.target.name)
+    console.log(e.target.value)
     console.log('handling form input');
     
   }
 
-  const handleButtonClick = () => {
+  const handleFormSubmission = (e) =>{
+    e.preventDefault()
+    console.log('form submitted');
+    
+  }
+
+  const handleButtonClick = (e) => {
+    e.preventDefault()
     alert('button click')
   }
 
   return <section>
-    <form>
+    <form onSubmit={handleFormSubmission}>
       <h2>Typical form</h2>
       <input type="text" name="example" style={{margin:'1rem 0'}} onChange={handleFormInput}></input>
+      <div>
+      <button type="submit">submiit</button>
+    </div>
     </form>
-    <button onClick={handleButtonClick}>click me</button>
+    
+    <button type="" onClick={handleButtonClick}>click me</button>
   </section>
 }
 
 const Book = (props) => {
   //console.log('props',props);
-  const { img, children,title, author } = props
+  const { img, children,title, author, someVal, id  } = props
+  const displayTitle = (e) => {
+    console.log(e);
+    
+    console.log(title);
+    
+  }
   return (
     <article className="book">
       <img
@@ -61,6 +83,7 @@ const Book = (props) => {
         alt="let them live"
       />
       <h2>{title}</h2>
+      <button onClick={()=>someVal(id) }>Display Title</button>
       <p>{author}</p>
       {children}
     </article>
